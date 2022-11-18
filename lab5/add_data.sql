@@ -1,0 +1,18 @@
+insert into public.library_user (library_user_id, role_id, email, "name", phone, address)
+values (99999, null, 'a', 'rgj', 204, 748),
+(1, null, 'agj', 'agj', 204, 748),
+(2, null, 'bgj', 'bgj', 205, 748),
+(3, null, 'Сgj', 'Сgj', 206, 748),
+(4, null, 'Dgj', 'Dgj', 207, 748),
+(5, null, 'jgj', 'jgj', 208, 748),
+(6, null, 'kgj', 'kgj', 209, 748),
+(7, null, 'Lgj', 'Lgj', 2010, 748),
+(8, null, 'Mgj', 'Mgj', 2011, 748),
+(9, null, 'vgj', 'vgj', 2012, 748),
+(10, null, 'wgj', 'wgj', 2013, 748),
+(11, null, 'Xgj', 'Xgj', 2014, 748),
+(12, null, 'Zgj', 'Zgj', 2015, 748),
+(13, null, '1gj', '1gj', 2016, 748),
+(14, null, '2gj', '2gj', 2017, 748),
+(15, null, '3gj', '3gj', 2018, 748),
+(16, null, '@gj', '@gj', 2019, 748);

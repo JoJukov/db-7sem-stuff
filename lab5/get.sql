@@ -1,0 +1,1 @@
+select tableoid::regclass, * from public.library_user
