@@ -21,11 +21,11 @@ library_user_id int primary key
 create or replace function public.library_user_email_separate_trigger()
 returns trigger as $$
 	BEGIN
-	if ( new.library_user_id % 3 == 0) then insert into public.library_user_first values (new.*);
+	if ( new.library_user_id % 3 = 0) then insert into public.library_user_first values (new.*);
 
-	elseif ( new.library_user_id % 3 == 1) then insert into public.library_user_second values (new.*);
+	elseif ( new.library_user_id % 3 = 1) then insert into public.library_user_second values (new.*);
 
-	elseif ( new.library_user_id % 3 == 2) then insert into public.library_user_third values (new.*);
+	elseif ( new.library_user_id % 3 = 2) then insert into public.library_user_third values (new.*);
 
 	else
 	    raise exception 'Unexpected data';
