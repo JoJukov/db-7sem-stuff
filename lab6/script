@@ -25,6 +25,7 @@ try {
 db.createCollection("publisher");
 // ok
 db.createCollection("author");
+// ok
 db.createCollection("book");
 // ok
 db.createCollection("warehouse");
@@ -37,56 +38,50 @@ db.createCollection("role");
 
 db.role.insertMany([
     {name: "role1"}
-])
-
-db.libraryUser.insertMany([
-    {name:"user1", email:"email1@$u", username: "usern1", role: db.role.findOne({name: "role1"})._id}
-])
-
-db.publisher.insertMany([
-   {name: "pub1", email: "email1@p"},
-   {name: "pub2", email: "email2@p"},
-   {name: "pub3", email: "email3@p"},
-   {name: "pub4", email: "email4@p"},
-   {name: "pub5", email: "email5@p"},
-   {name: "pub6", email: "email6@p"},
-   {name: "pub7", email: "email7@p"},
-   {name: "pub8", email: "email8@p"},
-   {name: "pub9", email: "email9@p"},
-   {name: "pub10", email: "email10@p"},
 ]);
 
-db.book.insertMany([
-    {title: "book1", year: 2001, publisher: db.publisher.findOne({name:"pub1"})._id},
-])
+for (var i = 1; i <= 10; i++) {
+    db.libraryUser.insertOne({name:"user"+i, email:"email"+i+"@u", username: "usern"+i, role: db.role.findOne({name: "role1"})._id})
+}
 
-db.author.insertMany([
-    {name: "auth1", birthdate: 2001, birthCity: "city1",
+for (var i = 1; i <= 10; i++) {
+    db.publisher.insertOne({name: "pub"+i, email: "email"+i+"@p"})
+}
+
+for (var i = 1; i <= 10; i++) {
+    db.book.insertOne({title: "book"+i, year: 2000+i, publisher: db.publisher.findOne({name:"pub"+i})._id})
+}
+
+for (var i = 1; i <= 10; i++) {
+    db.author.insertOne({name: "auth"+i, birthdate: i*191, birthCity: "city"+i,
      books:[
-        {book: db.book.findOne({title:"book1"})._id}
-    ]}
-])
+        {book: db.book.findOne({title:"book"+i})._id}
+    ]})
+}
 
 // дозаполнение книги автором
-db.book.updateMany({}, {
-    $set:{"authors":[{"author":db.author.findOne({name:"auth1"})._id}]}
-})
+for (var i = 1; i <= 10; i++) {
+    db.book.updateOne({"title":"book"+i},
+        {$set:{"authors":[
+            {"author":db.author.findOne({name:"auth"+i})._id}
+    ]}})
+}
 
 // нет смысла добавлять эту связь так же в книгу
-db.shoppingCart.insertMany([
-   {user: db.libraryUser.findOne({name:"user1"})._id,
+for (var i = 1; i <= 10; i++) {
+    db.shoppingCart.insertOne({user: db.libraryUser.findOne({name:"user"+i})._id,
     booking:[
-        {book: db.book.findOne({title:"book1"})._id, count:1}
-   ]}
-])
+        {book: db.book.findOne({title:"book"+i})._id, count:1}
+   ]})
+}
 
 // связь с книгами достаточно хранить только на складе
-db.warehouse.insertMany([
-    {name: "wrs1", address: "wadr1", city: "city1",
+for (var i = 1; i <= 10; i++) {
+    db.warehouse.insertOne({name: "wrs"+i, address: "wadr"+i, city: "city"+i,
      storing:[
-        {book: db.book.findOne({title:"book1"})._id, count:100}
-    ]}
-])
+        {book: db.book.findOne({title:"book"+i})._id, count:i*11%4}
+    ]})
+}
 
 // индекс
 db.libraryUser.createIndex({name: 1, username: 1})
@@ -110,11 +105,11 @@ db.createView(
                 _id: 0,
                 title: 1,
                 year: 1,
-                name: "$P.name"
+                Pname: "$P.name"
          }
         },
         {
-            $unwind: "$name"
+            $unwind: "$Pname"
         }
    ]
 )
